@@ -45,7 +45,10 @@ CXXFLAGS="$CXXFLAGS -fPIC"
 
 %pre
 
-%post
+%post -n jq -p /sbin/ldconfig
+
+%postun -n jq -p /sbin/ldconfig
+
 
 %files
 %files
