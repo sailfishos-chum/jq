@@ -6,16 +6,16 @@ License: MIT
 Group: System/Utilities
 URL: https://stedolan.github.io/jq/
 
-Source: https://github.com/stedolan/jq/releases/download/jq-1.5/jq-1.5.tar.gz
+Source: %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
-BuildRequires: gcc
+BuildRequires: gcc flex bison libtool autoconf
 
 %description
 jq is a lightweight and flexible command-line JSON processor.
 
 %package devel
-Summary: ZeroMQ development headers
+Summary: JQ development headers
 Group: Development/Libraries
 Requires: %{name} = %{version}
 
@@ -23,10 +23,12 @@ Requires: %{name} = %{version}
 This package provides headers for development
 
 %prep
-%setup
+%setup -q -n %{name}-%{version}/jq
 
 %build
 %{__make} clean || true
+
+autoreconf -fi
 
 CFLAGS="$CFLAGS -fPIC"
 CXXFLAGS="$CXXFLAGS -fPIC"
