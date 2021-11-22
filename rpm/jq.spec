@@ -1,7 +1,7 @@
 Summary: lightweight and flexible command-line JSON processor
 Name: jq
 Version: 1.6
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: MIT
 Group: System/Utilities
 URL: https://stedolan.github.io/jq/
@@ -14,6 +14,9 @@ Patch1:     jq-1.6-runpath.patch
 Patch2:     jq-1.6-segfault-fix.patch
 BuildRequires: gcc flex bison libtool autoconf
 BuildRequires:  pkgconfig(oniguruma)
+BuildRequires:  git-core
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
 
 %description
 jq is a lightweight and flexible command-line JSON processor.
@@ -22,19 +25,9 @@ jq is a lightweight and flexible command-line JSON processor.
 Summary: JQ development headers
 Group: Development/Libraries
 Requires: %{name} = %{version}
-Requires:   %{name}-libs = %{version}
 
 %description devel
 This package provides headers for development
-
-%package libs
-Summary:    Libraries for %{name}
-Group:      Development/Libraries
-Requires(post): /sbin/ldconfig
-Requires(postun): /sbin/ldconfig
-
-%description libs
-%{summary}.
 
 
 %prep
@@ -47,8 +40,6 @@ Requires(postun): /sbin/ldconfig
 # jq-1.6-segfault-fix.patch
 %patch2 -p1
 %build
-%{__make} clean || true
-
 autoreconf -fi
 
 CFLAGS="$CFLAGS -fPIC"
@@ -63,36 +54,36 @@ CXXFLAGS="$CXXFLAGS -fPIC"
 
 %install
 %{__rm} -rf %{buildroot}
-%{__make} install DESTDIR=%{buildroot}
+#%%{__make} install DESTDIR=%%{buildroot}
+%make_install
 
 rm -f %{buildroot}%{_docdir}/%{name}/README
 rm -f %{buildroot}%{_docdir}/%{name}/COPYING
 rm -f %{buildroot}%{_docdir}/%{name}/AUTHORS
 rm -rf %{buildroot}%{_mandir}
 
-%post libs -p /sbin/ldconfig
+%post -n jq -p /sbin/ldconfig
 
-%postun libs -p /sbin/ldconfig
+%postun -n jq -p /sbin/ldconfig
 
 %files
 %defattr(-, root, root, 0755)
 %license COPYING
 %{_docdir}/%{name}/README.md
 %{_bindir}/jq
+%{_libdir}/lib*.so.*
 
 %files devel
 %defattr(-, root, root, 0755)
 %{_includedir}/*.h
-#%%{_libdir}/*.a
 %{_libdir}/lib*.so
+#%%{_libdir}/*.la
 #%%{_mandir}/man1/*
 #%%{_datadir}/doc/jq
 
-%files libs
-%defattr(-,root,root,-)
-%{_libdir}/lib*.so.*
-
 %changelog
+* Mon Nov 22 2021 nephros <sailfish@nephros.org> - 1.6-2
+- disable static build- remove libs
 * Mon Nov 22 2021 nephros <sailfish@nephros.org> - 1.6-1
 - version bump
 - do not use packaged oniguruma library
