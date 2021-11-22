@@ -83,7 +83,7 @@ rm -rf %{buildroot}%{_mandir}
 %files devel
 %defattr(-, root, root, 0755)
 %{_includedir}/*.h
-%{_libdir}/*.a
+#%%{_libdir}/*.a
 %{_libdir}/lib*.so
 #%%{_mandir}/man1/*
 #%%{_datadir}/doc/jq
