@@ -12,9 +12,9 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 Patch0:     jq-1.6-r3-never-bundle-oniguruma.patch
 Patch1:     jq-1.6-runpath.patch
 Patch2:     jq-1.6-segfault-fix.patch
+Patch3:     jq-1.6-warnings.patch
 BuildRequires: gcc flex bison libtool autoconf
-BuildRequires:  pkgconfig(oniguruma)
-BuildRequires:  git-core
+BuildRequires: pkgconfig(oniguruma)
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
@@ -39,16 +39,21 @@ This package provides headers for development
 %patch1 -p1
 # jq-1.6-segfault-fix.patch
 %patch2 -p1
-%build
-autoreconf -fi
+# jq-1.6-warnings.patch
+%patch3 -p1
 
+%build
 CFLAGS="$CFLAGS -fPIC"
 CXXFLAGS="$CXXFLAGS -fPIC"
+
+autoreconf -fi
+
 %configure --disable-static \
+    --enable-silent-rules \
     --disable-maintainer-mode \
     --enable-devel \
     --disable-valgrind \
-    --disable-docs \
+    --disable-docs
 
 %{__make} %{?_smp_mflags}
 
@@ -83,7 +88,8 @@ rm -rf %{buildroot}%{_mandir}
 
 %changelog
 * Mon Nov 22 2021 nephros <sailfish@nephros.org> - 1.6-2
-- disable static build- remove libs
+- disable static build - remove libs
+
 * Mon Nov 22 2021 nephros <sailfish@nephros.org> - 1.6-1
 - version bump
 - do not use packaged oniguruma library
