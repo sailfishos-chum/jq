@@ -21,6 +21,14 @@ Requires(postun): /sbin/ldconfig
 %description
 jq is a lightweight and flexible command-line JSON processor.
 
+PackageName: jq
+Type: console-application
+Custom:
+  Repo: https://github.com/stedolan/jq
+Icon: https://raw.githubusercontent.com/stedolan/jq/master/docs/public/jq.png
+Categories:
+  - Utility
+
 %package devel
 Summary: JQ development headers
 Group: Development/Libraries
@@ -29,6 +37,7 @@ Requires: %{name} = %{version}
 %description devel
 This package provides headers for development
 
+PackageName: jq Development
 
 %prep
 %setup -q -n %{name}-%{version}/jq
