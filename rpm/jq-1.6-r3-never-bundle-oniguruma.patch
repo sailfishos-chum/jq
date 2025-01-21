@@ -1,8 +1,8 @@
 diff --git a/Makefile.am b/Makefile.am
-index 6344b4e..86d968e 100644
+index 76e35df..d8096ef 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -47,7 +47,7 @@ AM_YFLAGS = --warnings=all -d
+@@ -54,7 +54,7 @@ AM_YFLAGS = --warnings=all -Wno-yacc -d
  
  lib_LTLIBRARIES = libjq.la
  libjq_la_SOURCES = ${LIBJQ_SRC}
@@ -12,10 +12,10 @@ index 6344b4e..86d968e 100644
  
  if WIN32
 diff --git a/configure.ac b/configure.ac
-index 280694c..d96026e 100644
+index 118e084..e68669f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -249,6 +249,9 @@ AS_IF([test "x$with_oniguruma" != xno], [
+@@ -262,6 +262,9 @@ AS_IF([test "x$with_oniguruma" != xno], [
            onig_CFLAGS="-I${with_oniguruma}/include"
            onig_LDFLAGS="-L${with_oniguruma}/lib"
        ])

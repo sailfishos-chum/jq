@@ -1,7 +1,7 @@
 Summary: lightweight and flexible command-line JSON processor
 Name: jq
-Version: 1.6
-Release: 2%{?dist}
+Version: 1.7.1
+Release: 0%{?dist}
 License: MIT
 Group: System/Utilities
 URL: https://stedolan.github.io/jq/
@@ -11,8 +11,6 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 Patch0:     jq-1.6-r3-never-bundle-oniguruma.patch
 Patch1:     jq-1.6-runpath.patch
-Patch2:     jq-1.6-segfault-fix.patch
-Patch3:     jq-1.6-warnings.patch
 BuildRequires: gcc flex bison libtool autoconf
 BuildRequires: pkgconfig(oniguruma)
 Requires(post): /sbin/ldconfig
@@ -21,11 +19,11 @@ Requires(postun): /sbin/ldconfig
 %description
 jq is a lightweight and flexible command-line JSON processor.
 
-PackageName: jq
+Title: jq
 Type: console-application
 Custom:
   Repo: https://github.com/stedolan/jq
-Icon: https://raw.githubusercontent.com/stedolan/jq/master/docs/public/jq.png
+PackageIcon: https://raw.githubusercontent.com/stedolan/jq/master/docs/public/jq.png
 Categories:
   - Utility
 
@@ -40,16 +38,7 @@ This package provides headers for development
 PackageName: jq Development
 
 %prep
-%setup -q -n %{name}-%{version}/jq
-
-# jq-1.6-r3-never-bundle-oniguruma.patch
-%patch0 -p1
-# jq-1.6-runpath.patch
-%patch1 -p1
-# jq-1.6-segfault-fix.patch
-%patch2 -p1
-# jq-1.6-warnings.patch
-%patch3 -p1
+%autosetup -n %{name}-%{version}/jq
 
 %build
 CFLAGS="$CFLAGS -fPIC"
@@ -64,11 +53,9 @@ autoreconf -fi
     --disable-valgrind \
     --disable-docs
 
-%{__make} %{?_smp_mflags}
+%make_build
 
 %install
-%{__rm} -rf %{buildroot}
-#%%{__make} install DESTDIR=%%{buildroot}
 %make_install
 
 rm -f %{buildroot}%{_docdir}/%{name}/README
@@ -81,19 +68,14 @@ rm -rf %{buildroot}%{_mandir}
 %postun -n jq -p /sbin/ldconfig
 
 %files
-%defattr(-, root, root, 0755)
 %license COPYING
 %{_docdir}/%{name}/README.md
 %{_bindir}/jq
 %{_libdir}/lib*.so.*
 
 %files devel
-%defattr(-, root, root, 0755)
 %{_includedir}/*.h
 %{_libdir}/lib*.so
-#%%{_libdir}/*.la
-#%%{_mandir}/man1/*
-#%%{_datadir}/doc/jq
 
 %changelog
 * Mon Nov 22 2021 nephros <sailfish@nephros.org> - 1.6-2
