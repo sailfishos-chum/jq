@@ -58,9 +58,9 @@ autoreconf -fi
 %install
 %make_install
 
-rm -f %{buildroot}%{_docdir}/%{name}/README
 rm -f %{buildroot}%{_docdir}/%{name}/COPYING
 rm -f %{buildroot}%{_docdir}/%{name}/AUTHORS
+rm -f %{buildroot}%{_docdir}/%{name}/NEWS.md
 rm -rf %{buildroot}%{_mandir}
 
 %post -n jq -p /sbin/ldconfig
@@ -76,6 +76,7 @@ rm -rf %{buildroot}%{_mandir}
 %files devel
 %{_includedir}/*.h
 %{_libdir}/lib*.so
+%{_libdir}/pkgconfig/*.pc
 
 %changelog
 * Mon Nov 22 2021 nephros <sailfish@nephros.org> - 1.6-2
