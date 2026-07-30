@@ -1,6 +1,6 @@
 Summary: lightweight and flexible command-line JSON processor
 Name: jq
-Version: 1.7.1
+Version: 1.8.2
 Release: 0%{?dist}
 License: MIT
 Group: System/Utilities
